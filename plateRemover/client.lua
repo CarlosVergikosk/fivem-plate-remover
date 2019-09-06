@@ -12,14 +12,14 @@ RegisterCommand("removeplate", function()
         local PlayerPed = PlayerPedId()
         -- Client's coords
         local Coords = GetEntityCoords(PlayerPed)
-        -- Client's vehicle location
-        local PedVehicleLocation = GetEntityCoords(GetVehiclePedIsIn(PlayerPed, false))
         -- Closest vehicle
         local Vehicle = GetClosestVehicle(Coords.x, Coords.y, Coords.z, 3.5, 0, 70)
+        -- Client's coords
+        local VehicleCoords = GetEntityCoords(Vehicle)
         -- Distance between client's ped and closest vehicle
-        local Distance = Vdist(PedVehicleLocation.x, PedVehicleLocation.y, PedVehicleLocation.z, Coords.x, Coords.y, Coords.z)
+        local Distance = Vdist(VehicleCoords.x, VehicleCoords.y, VehicleCoords.z, Coords.x, Coords.y, Coords.z)
         -- If within range and Ped is in a vehicle
-        if Distance < 3.5 and IsPedInAnyVehicle(PlayerPed, false) then
+        if Distance < 3.5 and not IsPedInAnyVehicle(PlayerPed, false) then
             -- Notification and animation
             TriggerEvent("mythic_progbar:client:progress", {
                 name = "retirarmatricula",
@@ -52,11 +52,11 @@ RegisterCommand("removeplate", function()
             SetVehicleNumberPlateText(Vehicle, " ")
         else
             -- Notification
-            exports["mythic_notify"]:SendAlert("error", "No vehicle nearby")
+            exports["mythic_notify"]:SendAlert("error", "No vehicle nearby.")
         end
     else
         -- Notification
-        exports["mythic_notify"]:SendAlert("error", "You already have a licence plate on you")
+        exports["mythic_notify"]:SendAlert("error", "You already have a licence plate on you.")
     end
 end)
 
@@ -68,19 +68,19 @@ RegisterCommand("putplate", function()
         local PlayerPed = PlayerPedId()
         -- Client's coords
         local Coords = GetEntityCoords(PlayerPed)
-        -- Client's vehicle location
-        local PedVehicleLocation = GetEntityCoords(GetVehiclePedIsIn(PlayerPed, false))
         -- Closest vehicle
         local Vehicle = GetClosestVehicle(Coords.x, Coords.y, Coords.z, 3.5, 0, 70)
+        -- Client's coords
+        local VehicleCoords = GetEntityCoords(Vehicle)
         -- Distance between client's ped and closest vehicle
-        local Distance = Vdist(PedVehicleLocation.x, PedVehicleLocation.y, PedVehicleLocation.z, coords.x, coords.y, coords.z)
+        local Distance = Vdist(VehicleCoords.x, VehicleCoords.y, VehicleCoords.z, Coords.x, Coords.y, Coords.z)
         -- If within range and Ped is in a vehicle
-        if Distance < 3.5 and IsPedInAnyVehicle(PlayerPed, false) then
-            -- Notification
+        if Distance < 3.5 and not IsPedInAnyVehicle(PlayerPed, false) then
+            -- Notification and animation
             TriggerEvent("mythic_progbar:client:progress", {
                 name = "retirarmatricula",
                 duration = 7000,
-                label = "placing plate...",
+                label = "Placing plate...",
                 useWhileDead = false,
                 canCancel = true,
                 controlDisables = {
@@ -101,20 +101,18 @@ RegisterCommand("putplate", function()
             -- Wait 6 seconds
             Citizen.Wait(6000)
             -- Set plate index to stored index
-            SetVehicleNumberPlateTextIndex(Vehicle, index)
+            SetVehicleNumberPlateTextIndex(Vehicle, LicencePlate.Index)
             -- Set plate number to stored number
-            SetVehicleNumberPlateText(Vehicle, number)
-            -- Set the plate to nothing
-            SetVehicleNumberPlateText(Vehicle, " ")
+            SetVehicleNumberPlateText(Vehicle, LicencePlate.Number)
             -- Reset stored values
             LicencePlate.Index = false
             LicencePlate.Number = false
         else
             -- Notification
-            exports['mythic_notify']:SendAlert("error", "No vehicle nearby")
+            exports['mythic_notify']:SendAlert("error", "No vehicle nearby.")
         end
     else
         -- Notification
-        exports['mythic_notify']:SendAlert("error", "You do not have a licence plate on you")
+        exports['mythic_notify']:SendAlert("error", "You do not have a licence plate on you.")
     end
 end)
