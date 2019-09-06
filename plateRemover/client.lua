@@ -1,5 +1,5 @@
 -- Made by IB1G, edited by Inferno (Christopher M.)
-
+local LastVehicle = nil
 local LicencePlate = {}
 LicencePlate.Index = false
 LicencePlate.Number = false
@@ -20,28 +20,12 @@ RegisterCommand("removeplate", function()
         local Distance = Vdist(VehicleCoords.x, VehicleCoords.y, VehicleCoords.z, Coords.x, Coords.y, Coords.z)
         -- If within range and Ped is in a vehicle
         if Distance < 3.5 and not IsPedInAnyVehicle(PlayerPed, false) then
-            -- Notification and animation
-            TriggerEvent("mythic_progbar:client:progress", {
-                name = "retirarmatricula",
-                duration = 7000,
-                label = "Removing plate...",
-                useWhileDead = false,
-                canCancel = true,
-                controlDisables = {
-                    disableMovement = true,
-                    disableCarMovement = true,
-                    disableMouse = false,
-                    disableCombat = true,
-                },
-                animation = {
-                    animDict = "mini@repair",
-                    anim = "fixing_a_player",
-                }
-            }, function(status)
-                if not status then
-                    StopAnimTask(PlayerPedId(), "mini@repair", "fixing_a_player", 1.0)
-                end
-            end)
+            --Saves the last vehicle
+			LastVehicle = Vehicle
+			-- Notification and animation
+            Animation()
+			SendNUIMessage({type = "ui",display = true,time = 6000,text = "Removing Plate..."}) --PROGRESSBAR
+			StopAnimTask(PlayerPedId(), "mini@repair", "fixing_a_player", 1.0)
             -- Wait 6 seconds
             Citizen.Wait(6000)
             -- Store plate index
@@ -75,29 +59,13 @@ RegisterCommand("putplate", function()
         -- Distance between client's ped and closest vehicle
         local Distance = Vdist(VehicleCoords.x, VehicleCoords.y, VehicleCoords.z, Coords.x, Coords.y, Coords.z)
         -- If within range and Ped is in a vehicle
-        if Distance < 3.5 and not IsPedInAnyVehicle(PlayerPed, false) then
-            -- Notification and animation
-            TriggerEvent("mythic_progbar:client:progress", {
-                name = "retirarmatricula",
-                duration = 7000,
-                label = "Placing plate...",
-                useWhileDead = false,
-                canCancel = true,
-                controlDisables = {
-                    disableMovement = true,
-                    disableCarMovement = true,
-                    disableMouse = false,
-                    disableCombat = true,
-                },
-                animation = {
-                    animDict = "mini@repair",
-                    anim = "fixing_a_player",
-                }
-            }, function(status)
-                if not status then
-                    StopAnimTask(PlayerPedId(), "mini@repair", "fixing_a_player", 1.0)
-                end
-            end)
+        if ( (Distance < 3.5) and not IsPedInAnyVehicle(PlayerPed, false) and (Vehicle == LastVehicle) ) then
+            --Cleans variable
+			LastVehicle = nil
+			-- Notification and animation
+			Animation()
+			SendNUIMessage({type = "ui",display = true,time = 6000,text = "Placing Plate..."}) --PROGRESSBAR
+			StopAnimTask(PlayerPedId(), "mini@repair", "fixing_a_player", 1.0)
             -- Wait 6 seconds
             Citizen.Wait(6000)
             -- Set plate index to stored index
@@ -116,3 +84,14 @@ RegisterCommand("putplate", function()
         exports['mythic_notify']:SendAlert("error", "You do not have a licence plate on you.")
     end
 end)
+
+--ANIMATION
+function Animation()
+    local pid = PlayerPedId()
+    RequestAnimDict("mini")
+    RequestAnimDict("mini@repair")
+    while (not HasAnimDictLoaded("mini@repair")) do 
+		Citizen.Wait(10) 
+	end
+    TaskPlayAnim(pid,"mini@repair","fixing_a_player",1.0,-1.0, 5000, 0, 1, true, true, true)
+end
