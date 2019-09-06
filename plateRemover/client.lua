@@ -36,11 +36,13 @@ RegisterCommand("removeplate", function()
             SetVehicleNumberPlateText(Vehicle, " ")
         else
             -- Notification
-            exports["mythic_notify"]:SendAlert("error", "No vehicle nearby.")
+			-- exports["mythic_notify"]:SendAlert("error", "No vehicle nearby.") Mythic_Notification
+			TriggerEvent('esx:showNotification', '~r~ No vehicle nearby.')
         end
     else
         -- Notification
-        exports["mythic_notify"]:SendAlert("error", "You already have a licence plate on you.")
+		-- exports["mythic_notify"]:SendAlert("error", "You already have a licence plate on you.") Mythic_Notification
+		TriggerEvent('esx:showNotification', '~r~ You do not have a licence plate on you.')
     end
 end)
 
@@ -77,11 +79,13 @@ RegisterCommand("putplate", function()
             LicencePlate.Number = false
         else
             -- Notification
-            exports['mythic_notify']:SendAlert("error", "No vehicle nearby.")
+			-- exports["mythic_notify"]:SendAlert("error", "No vehicle nearby.") Mythic_Notification
+			TriggerEvent('esx:showNotification', '~r~ No vehicle nearby.')
         end
     else
         -- Notification
-        exports['mythic_notify']:SendAlert("error", "You do not have a licence plate on you.")
+		-- exports["mythic_notify"]:SendAlert("error", "You already have a licence plate on you.") Mythic_Notification
+		TriggerEvent('esx:showNotification', '~r~ You do not have a licence plate on you.')
     end
 end)
 
