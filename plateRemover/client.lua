@@ -61,22 +61,28 @@ RegisterCommand("putplate", function()
         -- Distance between client's ped and closest vehicle
         local Distance = Vdist(VehicleCoords.x, VehicleCoords.y, VehicleCoords.z, Coords.x, Coords.y, Coords.z)
         -- If within range and Ped is in a vehicle
-        if ( (Distance < 3.5) and not IsPedInAnyVehicle(PlayerPed, false) and (Vehicle == LastVehicle) ) then
-            --Cleans variable
-			LastVehicle = nil
-			-- Notification and animation
-			Animation()
-			SendNUIMessage({type = "ui",display = true,time = 6000,text = "Placing Plate..."}) --PROGRESSBAR
-			StopAnimTask(PlayerPedId(), "mini@repair", "fixing_a_player", 1.0)
-            -- Wait 6 seconds
-            Citizen.Wait(6000)
-            -- Set plate index to stored index
-            SetVehicleNumberPlateTextIndex(Vehicle, LicencePlate.Index)
-            -- Set plate number to stored number
-            SetVehicleNumberPlateText(Vehicle, LicencePlate.Number)
-            -- Reset stored values
-            LicencePlate.Index = false
-            LicencePlate.Number = false
+        if ( (Distance < 3.5) and not IsPedInAnyVehicle(PlayerPed, false) ) then
+		if (Vehicle == LastVehicle) then
+			--Cleans variable
+				LastVehicle = nil
+				-- Notification and animation
+				Animation()
+				SendNUIMessage({type = "ui",display = true,time = 6000,text = "Placing Plate..."}) --PROGRESSBAR
+				StopAnimTask(PlayerPedId(), "mini@repair", "fixing_a_player", 1.0)
+			-- Wait 6 seconds
+			Citizen.Wait(6000)
+			-- Set plate index to stored index
+			SetVehicleNumberPlateTextIndex(Vehicle, LicencePlate.Index)
+			-- Set plate number to stored number
+			SetVehicleNumberPlateText(Vehicle, LicencePlate.Number)
+			-- Reset stored values
+			LicencePlate.Index = false
+			LicencePlate.Number = false
+		else
+			-- Notification
+			-- exports["mythic_notify"]:SendAlert("error", "This plate does not belong here")
+			TriggerEvent('esx:showNotification', '~r~ This plate does not belong here')
+		end
         else
             -- Notification
 			-- exports["mythic_notify"]:SendAlert("error", "No vehicle nearby.") Mythic_Notification
