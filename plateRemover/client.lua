@@ -1,4 +1,4 @@
--- Made by IB1G, edited by Inferno (Christopher M.)
+-- Made by B1G (Carlos V.), edited by Inferno (Christopher M.)
 local LastVehicle = nil
 local LicencePlate = {}
 LicencePlate.Index = false
