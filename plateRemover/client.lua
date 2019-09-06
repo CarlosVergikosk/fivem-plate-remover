@@ -17,7 +17,7 @@ RegisterCommand("removeplate", function()
         -- Closest vehicle
         local Vehicle = GetClosestVehicle(Coords.x, Coords.y, Coords.z, 3.5, 0, 70)
         -- Distance between client's ped and closest vehicle
-        local Distance = Vdist(PedVehicleLocation.x, PedVehicleLocation.y, PedVehicleLocation.z, coords.x, coords.y, coords.z)
+        local Distance = Vdist(PedVehicleLocation.x, PedVehicleLocation.y, PedVehicleLocation.z, Coords.x, Coords.y, Coords.z)
         -- If within range and Ped is in a vehicle
         if Distance < 3.5 and IsPedInAnyVehicle(PlayerPed, false) then
             -- Notification and animation
@@ -101,9 +101,9 @@ RegisterCommand("putplate", function()
             -- Wait 6 seconds
             Citizen.Wait(6000)
             -- Set plate index to stored index
-            SetVehicleNumberPlateTextIndex(vehicle, index)
+            SetVehicleNumberPlateTextIndex(Vehicle, index)
             -- Set plate number to stored number
-            SetVehicleNumberPlateText(vehicle, number)
+            SetVehicleNumberPlateText(Vehicle, number)
             -- Set the plate to nothing
             SetVehicleNumberPlateText(Vehicle, " ")
             -- Reset stored values
