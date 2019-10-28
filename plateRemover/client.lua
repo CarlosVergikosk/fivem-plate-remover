@@ -1,4 +1,5 @@
 -- Made by B1G (Carlos V.), edited by Inferno (Christopher M.)
+-- Translate by C Y L E X
 local LastVehicle = nil
 local LicencePlate = {}
 LicencePlate.Index = false
@@ -24,7 +25,7 @@ RegisterCommand("removeplate", function()
 			LastVehicle = Vehicle
 			-- Notification and animation
             Animation()
-			SendNUIMessage({type = "ui",display = true,time = 6000,text = "Removing Plate..."}) --PROGRESSBAR
+			SendNUIMessage({type = "ui",display = true,time = 6000,text = "Plaka sökülüyor..."}) --PROGRESSBAR
 			StopAnimTask(PlayerPedId(), "mini@repair", "fixing_a_player", 1.0)
             -- Wait 6 seconds
             Citizen.Wait(6000)
@@ -36,13 +37,13 @@ RegisterCommand("removeplate", function()
             SetVehicleNumberPlateText(Vehicle, " ")
         else
             -- Notification
-			-- exports["mythic_notify"]:SendAlert("error", "No vehicle nearby.") Mythic_Notification
-			TriggerEvent('esx:showNotification', '~r~ No vehicle nearby.')
+			-- exports["mythic_notify"]:SendAlert("error", "Yakında araç bulunamadı.") Mythic_Notification
+			TriggerEvent('esx:showNotification', '~r~ Yakında araç bulunamadı')
         end
     else
         -- Notification
-		-- exports["mythic_notify"]:SendAlert("error", "You already have a licence plate on you.") Mythic_Notification
-		TriggerEvent('esx:showNotification', '~r~ You do not have a licence plate on you.')
+		-- exports["mythic_notify"]:SendAlert("error", "Üzerinde zaten bir plaka var!") Mythic_Notification
+		TriggerEvent('esx:showNotification', '~r~ Üzerinde bir plaka yok.')
     end
 end)
 
@@ -67,7 +68,7 @@ RegisterCommand("putplate", function()
 				LastVehicle = nil
 				-- Notification and animation
 				Animation()
-				SendNUIMessage({type = "ui",display = true,time = 6000,text = "Placing Plate..."}) --PROGRESSBAR
+				SendNUIMessage({type = "ui",display = true,time = 6000,text = "Plaka yerleştiriliyor."}) --PROGRESSBAR
 				StopAnimTask(PlayerPedId(), "mini@repair", "fixing_a_player", 1.0)
 			-- Wait 6 seconds
 			Citizen.Wait(6000)
@@ -80,18 +81,18 @@ RegisterCommand("putplate", function()
 			LicencePlate.Number = false
 		else
 			-- Notification
-			-- exports["mythic_notify"]:SendAlert("error", "This plate does not belong here")
-			TriggerEvent('esx:showNotification', '~r~ This plate does not belong here')
+			-- exports["mythic_notify"]:SendAlert("error", "Bu plaka bu araca ait değil!")
+			TriggerEvent('esx:showNotification', '~r~ Bu plaka bu araca ait değil!')
 		end
         else
             -- Notification
-			-- exports["mythic_notify"]:SendAlert("error", "No vehicle nearby.") Mythic_Notification
-			TriggerEvent('esx:showNotification', '~r~ No vehicle nearby.')
+			-- exports["mythic_notify"]:SendAlert("error", "Yakında araç bulunamadı.") Mythic_Notification
+			TriggerEvent('esx:showNotification', '~r~ Yakında araç bulunamadı.')
         end
     else
         -- Notification
-		-- exports["mythic_notify"]:SendAlert("error", "You already have a licence plate on you.") Mythic_Notification
-		TriggerEvent('esx:showNotification', '~r~ You do not have a licence plate on you.')
+		-- exports["mythic_notify"]:SendAlert("error", "Üzerinde zaten bir plaka var!") Mythic_Notification
+		TriggerEvent('esx:showNotification', '~r~ Üzerinde plaka bulunamadı.')
     end
 end)
 
